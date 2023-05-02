@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-md-center mb-4">
+  <h1 id="titleText" class="">How it Bee, {{username}}!</h1>
+</div>
+
+<div class="row justify-content-md-center">
+
+  <div class="col col-lg-8">
+    <div class="card bg-light mb-3">
+      <div class="card-body">
+        <h3 class="card-title">New Post</h3>
+        <form method="post" action="/post">
+          <div class="form-group">
+            <textarea class="form-control" name="post" rows="3" placeholder="What's on your mind?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" name="post-submit">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <h2 class="">My Feed</h2>
+    {% for post in posts %}
+    <!--{{ post }}-->
+    <div class="card bg-light border border-light my-3">
+      <div class="card-body py-2 post">
+
+	      <div class="row text-right d-flex align-items-baseline justify-content-end">
+            <h4 class="card-title font-weight-6 pl-3 bolder">{{ post.username }}</h4>
+            <h6 class="text-right card-subtitle  px-1 text-muted">{{ post.time|convert_time }}</h6>
+	      </div>
+
+        <div class="row align-items-center d-flex justify-content-around py-2 px-4">
+          <img class='img-fluid' src='http://picsum.photos/200/200' />
+            <h5 class="align-items-top">Report:</h5>
+          <div class="col-5 text-center">
+            <div class="row d-flex justify-content-between">
+	              <p class="col-12 text-center card-text">{{ post.text }}</p>
+              </div>
+            </div>
+        </div>
+
+        <div class="row">
+          <h5 class="col-12 bolder py-3 ">Comments</h5>
+          {% for comment in post.comments%}
+              <h6 class="col-4 mt-3 text-right">{{comment.username}}</h6>
+              <p class="col-8 mt-3 border-bottom border-bottom-1 border-warn comment-text">{{comment.content}}</p>
+          {% endfor %}
+        </div>
+
+
+        <form class="row d-flex justify-content-center py-2" method="post" action="/post/comment/">
+	        <label class="pr-3" for="comment"></label>
+	        <textarea rows="4" placeholder="Share your input" name="comment" class="col-8"></textarea>
+	        <button name='submit-comment' type="submit" style="margin-left:-80px;z-index:99;margin-top:-10px;" class="btn btn-primary font-weight-20 rounded-circle  h-25 py-2">Submit<i class="fa fa-paper-plane px-1"></i></button>
+
+          <label for="postID" hidden></label>
+          <input name="postID" value="{{post.id}}" type="number" hidden/>
+        </form>
+
+
+	      <div class="row w-70 py-2 mt-4 border-top border-dark border-top-2 justify-content-around d-flex align-items-baseline">
+	        <form   method="post" action="/post/vote/1">
+          <label for="postID" hidden></label>
+          <input name="postID" value="{{post.id}}" type="number" hidden/>
+	          <div class="d-inline-flex align-items-baseline">
+	            <p id='up-count'>{{post.upvotes}}</p>
+	            <button class="btn btn-primary mx-2  rounded-circle" name="upvote"><i class="fa fa-arrow-up p-1"></i></button>
+	          </div>
+	        </form>
+
+
+	        <form  method="post" action="/post/vote/0">
+          <label for="postID" hidden></label>
+          <input name="postID" value="{{post.id}}" type="number" hidden/>
+	          <div class="d-inline-flex align-items-baseline">
+	            <button class="btn btn-danger mx-2  rounded-circle" name="downvote"><i class="fa fa-arrow-down p-1"></i></button>
+	            <p id='down-count'>{{post.downvotes}}</p>
+	          </div>
+	        </form>
+
+	      </div>
+
+
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="col col-lg-3">
+    <div class="card bg-light mb-3">
+      <div class="card-body">
+        <h3 class="card-title">Add Friend</h3>
+        <form method="post" action="/addfriend">
+          <div class="form-group mb-1">
+            <input type="text" class="form-control" name="name" placeholder="username" />
+          </div>
+          <button type="submit" class="form-control btn btn-primary" name="addfriend">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card bg-light">
+      <div class="card-body">
+        <h3 class="card-title">My Friends</h3>
+        {% if friends %}
+          <ul>
+            {% for friend in friends %}
+              <li><a href="/friend/{{ friend.username }}">{{ friend.username }}</a></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="card-text">
+            Sorry, no friends!
+          </p>
+        {% endif %}
+      </div>
+    </div>
+    {% if user.permissions == 0 %}
+    <div class="card bg-light my-3">
+      <div class="card-body">
+        <h3 class="card-title">Verification</h3>
+          <p class="card-text">
+            <a id='verification-link' href="/verify">Apply For Verification </a>
+          </p>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if user.permissions == 1 %}
+    <div class="card bg-light my-3">
+      <div class="card-body">
+        <h3 class="card-title">Quizzes</h3>
+          <p class="card-text">
+            <a id="quiz-link" href="/quiz/Create">Create a New Quiz</a>
+          </p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}

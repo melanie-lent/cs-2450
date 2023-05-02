@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-md-center mb-4">
+  <h1 class="">Verification Application for {{username}}</h1>
+</div>
+
+<div class="row justify-content-md-center">
+  <div class="col col-lg-8">
+    <form method="post" action="/verify">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input required type="text" class="form-control" id="first-name-input" name="firstName" >
+        <label for="lastName">Last Name</label>
+        <input required type="text" class="form-control" id="last-name-input" name="lastName" >
+        <label for="university">Graduating University</label>
+        <input required type="text" class="form-control" id="university-input" name="university" >
+        <label for="studyField">Area of Study</label>
+        <input required type="text" class="form-control" id="study-field-input" name="studyField" >
+        <label for="experience">Years of Experience in Field</label>
+        <input required type="text" class="form-control" id="years-experience-input" name="experience" >
+      </div>
+      <button type="submit" id='submit' class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

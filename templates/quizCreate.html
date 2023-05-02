@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-md-center mb-4">
+  <h1 class="">Create a Quiz!</h1>
+</div>
+
+<div class="row justify-content-md-center">
+  <div class="col col-lg-8">
+    <form method="post" action="/quiz/Create">
+      <div class="form-group">
+        <label>Question</label>
+        <input type="text" class="form-control" name="question" required>
+        <small>Leave all answers empty to have an open-ended answer.</small>
+        <label>Answer 1</label>
+        <input type="text" class="form-control" name="choice1">
+        <label>Answer 2</label>
+        <input type="text" class="form-control" name="choice2">
+        <label>Answer 3</label>
+        <input type="text" class="form-control" name="choice3">
+        <label>Answer 4</label>
+        <input type="text" class="form-control" name="choice4">
+      </div>
+      <button name='submit' type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

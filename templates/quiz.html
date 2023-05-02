@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for quiz in quizzes %}
+        <div class="row justify-content-center my-3">
+            <div class="col-12 text-center">
+                <h3 class="title-text">{{quiz.question.question}}</h3>
+            </div>
+            <div class="col-10">
+                {% if quiz.choices|length > 1 %}
+                    {% for choice in quiz.choices %}
+                    <form method="post" action="/quiz/answers" class="row justify-content-center">
+                        <label for="quizID" hidden></label>
+                        <input name="quizID" value="{{quiz.question.id}}" hidden/>   
+                        <label for="answer" hidden></label>
+                        <input name="answer" value="{{choice.choice}}" hidden/>
+                        <button class="col-10 my-1 btn btn-light btn-outline-warning" type="submit">
+                            <div class="row">
+                                <div class="col-3">{{choice.choice}}</div>
+                                <div class="col-9">{{choice.content}}</div>
+                            </div>
+                        </button>
+                    </form>
+                    {% endfor %}
+                {% else %}
+                    <form method="post" action="/quiz/answers" class="row text-right justify-content-around">
+                        <label for="quizID" hidden></label>
+                        <input name="quizID" value="{{quiz.question.id}}" hidden/>
+                        <label class="pull-left" for="answer">Answer</label>
+                        <textarea class="col-11" lines="4" name="answer"></textarea>
+                        <button type="submit" class="m-2 btn btn-primary text-right">Submit</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
